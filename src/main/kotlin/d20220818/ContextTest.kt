@@ -1,25 +1,20 @@
 package d20220818
 
 import kotlinx.coroutines.*
-import kotlin.system.measureTimeMillis
 
 /**
  * @Author Heli
  */
+@OptIn(DelicateCoroutinesApi::class)
 fun main() = runBlocking {
-    val job = GlobalScope.async {
+    val dispatcher = newFixedThreadPoolContext(2, "default")
+    val job = GlobalScope.async(dispatcher) {
         delay(1000)
         "a"
     }
-
-    val millis = measureTimeMillis {
-        println(
-            "${job.await()} / ${
-                withContext(Dispatchers.IO) {
-                    "b"
-                }
-            }"
-        )
+    val immediatelySuspend = withContext(dispatcher) {
+        "b"
     }
-    println(millis)
+    println(job.await())
+    println(immediatelySuspend)
 }
