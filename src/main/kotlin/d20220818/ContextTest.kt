@@ -10,11 +10,19 @@ fun main() = runBlocking {
     val dispatcher = newFixedThreadPoolContext(2, "default")
     val job = GlobalScope.async(dispatcher) {
         delay(1000)
-        "a"
     }
+
+    GlobalScope.launch(dispatcher) {
+
+    }
+
     val immediatelySuspend = withContext(dispatcher) {
         "b"
+
     }
     println(job.await())
     println(immediatelySuspend)
 }
+
+fun normalAction() = "normalAction"
+suspend fun suspendAction() = "suspendAction"
