@@ -1,4 +1,6 @@
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 /**
  * @author Heli
@@ -8,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 suspend fun first() = "first"
 suspend fun second() = 2
 suspend fun third() = 3L
+suspend fun fourth() = "fourth"
 
 suspend fun wrap() {
     println("step 1")
@@ -21,5 +24,8 @@ suspend fun wrap() {
 }
 
 fun main() = runBlocking {
-    wrap()
+    withContext(Dispatchers.IO) {
+        wrap()
+    }
 }
+
